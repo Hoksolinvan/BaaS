@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>D3.js Boilerplate with Select2</title>
+
+  <!-- jQuery is required by Select2 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .chart-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    svg {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+    }
+
+    /* Optional: center the select */
+    .select-container {
+      display: flex;
+      justify-content: center;
+      column-gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Optional: width for the select */
+    
+    #Select_button:hover {
+      cursor: pointer;
+    }
+    
+    
+    #algo-select {
+      width: 150px;
+    }
+  </style>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+  <div style="display: flex; justify-content: flex-end;"> 
+    
+    <div style="background-color: #FF474C; width: 100px; height: 30px; text-align: center; padding-top:10px; border:2px black solid;" id="Select_button">
+      <b> Button </b>
+    </div>
+  </div>
+  <div>
+  <h2 style="text-align: center;">ClusterUI</h2>
+</div>
+  <div class="chart-container">
+    <svg id="chart" width="75%" height="400"></svg>
+  </div>
+
+  <div class="select-container">
+    <select id="algo-select">
+      <option value="KM">K-Means</option>
+      <option value="DB">DBSCAN</option>
+    </select>
+    
+    <div>
+      <b>Epsilon:  </b>
+    <input type="range" id="slider" min="0" max="100" value="50" />
+    <span id="sliderVal"> 50 </span>
+    </div>
+    
+    <div>
+      <b> MinPts: </b>
+      <input type="text" value="3"> </input>
+    </div>
+    <div>
+      <b>File: </b>
+    <input type="file" accept=".json">   
+  </div>
+  <div>
+    <b>Manual Input (Array format): </b>
+    <input type="text"> </input>
+    
+  </div>
+  <div>
+    <b> Submit Button </b>
+    <button> Submit</button>
+  </div>
+  </div>
+
+  <script>
+    // Initialize Select2 after DOM loaded
+    $(document).ready(function () {
+      $('#algo-select').select2({
+        minimumResultsForSearch: Infinity, // hides the search box since only two options
+      });
+
+      $('#algo-select').on('change', function () {
+        console.log('Selected:', $(this).val());
+        // Add your custom logic here for switching algorithms
+      });
+    });
+    
+    
+    const slider_1 = document.getElementById("slider");
+    
+    const slider_2 = document.getElementById("sliderVal");
+    
+    const button_1 = document.getElementById("Select_button");
+    
+    button_1.addEventListener("click",(event) => {
+      
+      if(button_1.style.backgroundColor === "rgb(255, 71, 76)"){
+         button_1.style.backgroundColor = "green";
+         }
+      else{
+        button_1.style.backgroundColor = "#FF474C";
+      }
+      
+      
+    });
+    
+    
+    slider_1.addEventListener("change", function(event) {
+      
+  slider_2.innerHTML = slider_1.value;
+});
+    
+  </script>
+</body>
+</html>
