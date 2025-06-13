@@ -97,15 +97,14 @@
   </div>
 
   <script>
-    // Initialize Select2 after DOM loaded
+   
     $(document).ready(function () {
       $('#algo-select').select2({
-        minimumResultsForSearch: Infinity, // hides the search box since only two options
+        minimumResultsForSearch: Infinity, 
       });
 
       $('#algo-select').on('change', function () {
-        console.log('Selected:', $(this).val());
-        // Add your custom logic here for switching algorithms
+       
       });
     });
     
