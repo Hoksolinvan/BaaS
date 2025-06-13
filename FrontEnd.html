@@ -124,15 +124,15 @@
     
     <div>
       <b> MinPts: </b>
-      <input type="text" value="3"> </input>
+      <input type="text" value="3" id="minPts"> </input>
     </div>
     <div style="display:flex; flex-direction:row; gap:10px;">
       <b>File: </b>
-    <input type="file" accept=".json">   
+    <input type="file" accept=".json" id="filer">   
   </div>
   <div>
     <b>Manual Input (Array format): </b>
-    <input type="text"> </input>
+    <input type="text" id="manual_input"> </input>
     
   </div>
   <div>
@@ -187,16 +187,32 @@
     
     const submit_button = document.getElementById("submission");
     
-    
-    submit_button.addEventListener("click",function(event){
+    submit_button.addEventListener("click", function(event) {
+  const algorithm = document.getElementById("algo-select").value;
+  const algorithm_type = document.getElementById("algo-type-select").value;
+  const epsilon_value = slider_1.value;
+  const minPts = document.getElementById("minPts").value;
+  const manual_input_val = document.getElementById("manual_input").value;
+  const Ifile = document.getElementById("filer");
+
+  if (manual_input_val.trim() !== "" || Ifile.files.length > 0) {
+    if (Ifile.files.length > 0) {
+      // handle file input
+    }
+
+    if (manual_input_val.trim() !== "") {
+      // handle manual input
       
       
-     const algorithm = document.getElementById("algo-select").value;
-     const algorithm_type = document.getElementById("algo-type-select").value;
-     const epsilon_value = document.getElementById("")
+    }
+  } else {
+    alert("Please provide either manual input or a file.");
+    return;
+  }
+});
       
       
-    });
+      
     
     
   </script>
