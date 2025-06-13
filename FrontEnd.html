@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  
+  
   <title>D3.js Boilerplate with Select2</title>
 
+  
+  
   <!-- jQuery is required by Select2 -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -11,11 +15,38 @@
     href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
     rel="stylesheet"
   />
+  
+  
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <style>
+    
+    #sidebar{
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 250px;
+      background: green;
+      color: #fff;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      padding-top: 100px;
+      padding-left: 25px;
+      padding-bottom: 25px;
+      margin: 0;
+      
+    }
+    
+    #sidebar.open {
+      transform: translateX(0%);
+    }
+    
+    
+    
     body {
       font-family: sans-serif;
+      overflow-x: hidden;
     }
 
     .chart-container {
@@ -29,23 +60,22 @@
       border: 1px solid #ccc;
     }
 
-    /* Optional: center the select */
     .select-container {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       column-gap: 10px;
       margin-top: 20px;
     }
 
-    /* Optional: width for the select */
     
     #Select_button:hover {
       cursor: pointer;
     }
     
     
-    #algo-select {
-      width: 150px;
+    #algo-select, #algo-type-select  {
+      width: 200px;
     }
   </style>
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -54,8 +84,8 @@
 <body>
   <div style="display: flex; justify-content: flex-end;"> 
     
-    <div style="background-color: #FF474C; width: 100px; height: 30px; text-align: center; padding-top:10px; border:2px black solid;" id="Select_button">
-      <b> Button </b>
+    <div style="background-color: green; width: 100px; height: 30px; text-align: center; padding-top:10px; border:2px black solid; color: white;  z-index: 1000;" id="Select_button">
+      <b>⚙ Settings </b>
     </div>
   </div>
   <div>
@@ -64,14 +94,29 @@
   <div class="chart-container">
     <svg id="chart" width="75%" height="400"></svg>
   </div>
+  
+  
+  
 
-  <div class="select-container">
+  <div style="display:flex; flex-direction:column; gap: 20px;" id="sidebar">
     <select id="algo-select">
       <option value="KM">K-Means</option>
       <option value="DB">DBSCAN</option>
     </select>
     
+    
+    <select id="algo-type-select">
+      <option value="Self-made"><b>Self-Made</b></option>
+      <option value="CPU"><b>CPU</b></option>
+      <option value="GPU"><b>GPU</b></option>
+    </select>
+    
     <div>
+      
+    
+      
+     
+      
       <b>Epsilon:  </b>
     <input type="range" id="slider" min="0" max="100" value="50" />
     <span id="sliderVal"> 50 </span>
@@ -81,7 +126,7 @@
       <b> MinPts: </b>
       <input type="text" value="3"> </input>
     </div>
-    <div>
+    <div style="display:flex; flex-direction:row; gap:10px;">
       <b>File: </b>
     <input type="file" accept=".json">   
   </div>
@@ -91,22 +136,24 @@
     
   </div>
   <div>
-    <b> Submit Button </b>
-    <button> Submit</button>
+    <button id="submission" type="submit"> Submit </button>
   </div>
   </div>
 
   <script>
    
-    $(document).ready(function () {
-      $('#algo-select').select2({
-        minimumResultsForSearch: Infinity, 
-      });
+   $(document).ready(function () {
+  $('#algo-select').select2({
+    minimumResultsForSearch: Infinity, 
+  });
 
-      $('#algo-select').on('change', function () {
-       
-      });
-    });
+  $('#algo-type-select').select2({
+    minimumResultsForSearch: Infinity, 
+  });
+
+});
+    
+     
     
     
     const slider_1 = document.getElementById("slider");
@@ -118,10 +165,15 @@
     button_1.addEventListener("click",(event) => {
       
       if(button_1.style.backgroundColor === "rgb(255, 71, 76)"){
+        
          button_1.style.backgroundColor = "green";
+        
+          sidebar.classList.toggle('open');
+        
          }
       else{
-        button_1.style.backgroundColor = "#FF474C";
+        button_1.style.backgroundColor = "green";
+        sidebar.classList.toggle('open');
       }
       
       
@@ -132,6 +184,20 @@
       
   slider_2.innerHTML = slider_1.value;
 });
+    
+    const submit_button = document.getElementById("submission");
+    
+    
+    submit_button.addEventListener("click",function(event){
+      
+      
+     const algorithm = document.getElementById("algo-select").value;
+     const algorithm_type = document.getElementById("algo-type-select").value;
+     const epsilon_value = document.getElementById("")
+      
+      
+    });
+    
     
   </script>
 </body>
