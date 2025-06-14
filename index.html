@@ -198,10 +198,108 @@
   if (manual_input_val.trim() !== "" || Ifile.files.length > 0) {
     if (Ifile.files.length > 0) {
       // handle file input
+      
+      
+      
+      const post = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        
+        
+        body: JSON.stringify(json_dict),
+      };
+      
+      
+      if(algorithm == "KM"){
+        
+        
+        const json_dict = {
+          "data":,
+          "k":epsilon_value,
+          "mode": algorithm_type,
+        }
+        fetch("https://baas-4ged.onrender.com/clustering/kmeans").then(response => response.json()).then(data => { console.log(data)}).catch(error => {
+          console.error('Error: ', error);
+        });
+        
+        
+        
+      }
+      else{
+        
+        const json_dict = {
+          "data": 
+          "eps": epsilon_value,
+          "min_sample":minPts,
+          "mode": algorithm_type,
+          
+        };
+        
+        
+        fetch("https://baas-4ged.onrender.com/clustering/dbscan").then(response => response.json()).then(data => {
+          console.log(data)
+        }).catch(error => {
+          console.error('Error: ', error);
+        })
+        
+        
+      }
+      
+       
     }
+    
+    
 
     if (manual_input_val.trim() !== "") {
       // handle manual input
+      
+      
+      const array_manual = manual_input_val.split(";");
+      
+      
+        
+      
+      
+      if(algorithm == "KM"){
+        
+        
+        
+      const json_dict = {
+          "data": array_manual,
+          "k": epsilon_value,
+          "mode": algorithm_type,
+          
+        }
+      
+ 
+        fetch("https://baas-4ged.onrender.com/clustering/kmeans").then(response => response.json()).then(data => { console.log(data)}).catch(error => {
+          console.error('Error: ', error);
+        });
+        
+        
+      }
+      else{
+        
+        
+        const json_dict = {
+          "data": array_manual,
+          "eps": epsilon_value,
+          "min_sample":minPts,
+          "mode": algorithm_type,
+         
+        };
+        
+        
+        fetch("https://baas-4ged.onrender.com/clustering/dbscan").then(response => response.json()).then(data => {
+          console.log(data)
+        }).catch(error => {
+          console.error('Error: ', error);
+        })
+        
+        
+      }
       
       
     }
