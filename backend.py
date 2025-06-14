@@ -54,7 +54,7 @@ def dbscan_clustering(params: DBSCANParams):
     }
 
 
-@app.get("/clustering/kmeans")
+@app.post("/clustering/kmeans")
 def kmeans_clustering(params: KMeansParams):
 
     global global_status
