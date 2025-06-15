@@ -185,64 +185,88 @@
       
   slider_2.innerHTML = slider_1.value;
 });
-    
     const submit_button = document.getElementById("submission");
-    
-    submit_button.addEventListener("click", () => {
+
+submit_button.addEventListener("click", () => {
   const algo = document.getElementById("algo-select").value;
   const algoType = document.getElementById("algo-type-select").value;
   const epsOrK = Number(slider.value);
   const minPts = Number(document.getElementById("minPts").value);
   const fileInput = document.getElementById("filer");
+  const manualInputFile = document.getElementById("manual_input");
 
-  if (fileInput.files.length === 0) {
-    alert("Please select a JSON file.");
+  let text_value = null;
+
+  const manualText = manualInputFile.value.trim();
+  const hasFile = fileInput.files.length > 0;
+  const hasManual = manualText.length > 0;
+
+  if (!hasFile && !hasManual) {
+    alert("Please select a JSON file or provide manual input.");
     return;
   }
 
-  const file = fileInput.files[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
+  if (hasManual && !hasFile) {
     try {
-      const data = JSON.parse(e.target.result);
-
-      const payload =
-        algo === "KM"
-          ? { data, k: minPts, mode: algoType }
-          : { data, eps: epsOrK, min_samples: minPts, mode: algoType };
-
-      const url = algo === "KM"
-        ? "https://baas-4ged.onrender.com/clustering/kmeans"
-        : "https://baas-4ged.onrender.com/clustering/dbscan";
-
-      fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => res.json())
-        .then((result) => {
-          console.log("Response:", result);
-          // Optionally update UI here with result
-        })
-        .catch((err) => console.error("Fetch error:", err));
-    } catch (err) {
-      alert("Invalid JSON file.");
-      console.error(err);
+      text_value = manualText.split(";").map(s => JSON.parse(s.trim()));
+      sendData(text_value, algo, algoType, epsOrK, minPts);
+    } catch (e) {
+      alert("Invalid manual input format. Use format like: [1,2];[3,4]");
+      console.error(e);
     }
-  };
+    return;
+  }
 
-  reader.onerror = (err) => {
-    alert("Error reading file.");
-    console.error(err);
-  };
+  if (hasFile) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
 
-  reader.readAsText(file);
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        sendData(data, algo, algoType, epsOrK, minPts);
+      } catch (err) {
+        alert("Invalid JSON file.");
+        console.error(err);
+      }
+    };
+
+    reader.onerror = (err) => {
+      alert("Error reading file.");
+      console.error(err);
+    };
+
+    reader.readAsText(file);
+  }
 });
 
-      
-      
+function sendData(data, algo, algoType, epsOrK, minPts) {
+  const payload =
+    algo === "KM"
+      ? { data, k: minPts, mode: algoType }
+      : { data, eps: epsOrK, min_samples: minPts, mode: algoType };
+
+  const url =
+    algo === "KM"
+      ? "https://baas-4ged.onrender.com/clustering/kmeans"
+      : "https://baas-4ged.onrender.com/clustering/dbscan";
+
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      console.log("Response:", result);
+      // You can call a render function here if needed
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      alert("Error sending request.");
+    });
+}
+
       
     
     
