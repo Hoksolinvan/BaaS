@@ -208,7 +208,7 @@
 
       const payload =
         algo === "KM"
-          ? { data, k: epsOrK, mode: algoType }
+          ? { data, k: minPts, mode: algoType }
           : { data, eps: epsOrK, min_samples: minPts, mode: algoType };
 
       const url = algo === "KM"
